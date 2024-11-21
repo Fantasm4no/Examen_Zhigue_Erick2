@@ -17,15 +17,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Crear el directorio de trabajo para Angular
 WORKDIR /var/www/angular-app
 
-# Copiar la aplicación Angular al contenedor
-COPY ./angular-app/ /var/www/angular-app/
+# Copiar todo el contenido del proyecto Angular al contenedor
+COPY . /var/www/angular-app/
 
 # Construir la aplicación Angular
 RUN npm install && ng build --configuration production --output-path=/var/www/html
 
 # Configurar Apache para servir Angular
-RUN rm -rf /var/www/html/index.html && \
-    echo '<VirtualHost *:80>\n\
+RUN echo '<VirtualHost *:80>\n\
     DocumentRoot /var/www/html\n\
     <Directory /var/www/html>\n\
         Options Indexes FollowSymLinks\n\
